@@ -57,7 +57,7 @@ class TestScoreBoardMethods:
             scoreboard.finish_match(match_fixture, 123456) 
 
 
-class TestScoreBoardInterface:
+class TestScoreBoardLogic:
 
     def test_get_summary(self, scoreboard_fixture):
         scoreboard = scoreboard_fixture
@@ -65,19 +65,25 @@ class TestScoreBoardInterface:
         match1 = scoreboard.start_match("Argentina", "Brazil")
         match2 = scoreboard.start_match("Spain", "Germany")
         match3 = scoreboard.start_match("France", "Italy")
-        match4 = scoreboard.start_match("France", "Italy")
+        match4 = scoreboard.start_match("Cuba", "Spain")
+        match5 = scoreboard.start_match("Luxembourg", "France")
 
-        scoreboard.update_match(match1, 3, 1, match1.match_id)
+        scoreboard.update_match(match1, 3, 6, match1.match_id)
         scoreboard.update_match(match2, 2, 2, match2.match_id)
-        scoreboard.update_match(match2, 2, 2, match2.match_id)
+        scoreboard.update_match(match3, 3, 3, match3.match_id)
+        scoreboard.update_match(match4, 1, 0, match4.match_id)
+        scoreboard.update_match(match5, 3, 4, match5.match_id)
 
         summary = scoreboard.get_summary()
         print (scoreboard.get_summary())
 
-        assert len(summary) == 3
-        assert summary[0] == match1  
+        assert len(summary) == 5
+        assert summary[0] == match3  
         assert summary[1] == match2  
-        assert summary[2] == match3  
+        assert summary[2] == match1
+        assert summary[3] == match5
+        assert summary[4] == match5
+
     def test_repr(self, scoreboard_fixture):
         """Test string representation of the scoreboard."""
         scoreboard = scoreboard_fixture
