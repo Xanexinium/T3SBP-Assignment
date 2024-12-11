@@ -2,10 +2,6 @@ import pytest
 import re
 from ScoreStreamPy.Match import Match
 
-import pytest
-import re
-from ScoreStreamPy.Match import Match
-
 
 class TestMatchTeamValidate:
 
