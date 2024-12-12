@@ -59,8 +59,8 @@ class TestMatchClassMethods:
     ("Argentina", "Jamaica", 5, 0),
     ])
     def test_update_score(self, home_team, away_team, home_score, away_score):
-        match = Match(home_team, away_team, home_score, away_score)
-        match.update_score(5, 0)
+        match = Match(home_team, away_team)
+        match.update_score(home_score, away_score)
         print(match)
         assert match.home_score == 5
         assert match.away_score == 0
