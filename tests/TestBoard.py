@@ -1,5 +1,4 @@
 import pytest
-import time
 from ScoreStreamPy import Match
 from ScoreStreamPy import ScoreBoard
 
@@ -63,19 +62,28 @@ class TestScoreBoardLogic:
         scoreboard = scoreboard_fixture
 
         match1 = scoreboard.start_match("Argentina", "Brazil")
+        print(f"Started match: {match1}")
         match2 = scoreboard.start_match("Spain", "Germany")
+        print(f"Started match: {match2}")
         match3 = scoreboard.start_match("France", "Italy")
+        print(f"Started match: {match3}")
         match4 = scoreboard.start_match("Cuba", "Spain")
+        print(f"Started match: {match4}")
         match5 = scoreboard.start_match("Luxembourg", "France")
+        print(f"Started match: {match5}")
 
         scoreboard.update_match(match1, 3, 6, match1.match_id)
+        print(f"Started match: {match1}")
         scoreboard.update_match(match2, 2, 2, match2.match_id)
+        print(f"Started match: {match2}")
         scoreboard.update_match(match3, 3, 3, match3.match_id)
+        print(f"Started match: {match3}")
         scoreboard.update_match(match4, 1, 0, match4.match_id)
+        print(f"Started match: {match4}")
         scoreboard.update_match(match5, 3, 4, match5.match_id)
+        print(f"Started match: {match5}")
 
         summary = scoreboard.get_summary()
-        print (scoreboard.get_summary())
 
         assert len(summary) == 5
         assert summary[0] == match3  

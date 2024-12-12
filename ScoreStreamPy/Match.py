@@ -1,6 +1,7 @@
 import threading
 import time
 import re
+import uuid
 
 class Match:
     def __init__(self, home_team: str, away_team: str,
@@ -11,7 +12,7 @@ class Match:
         self.home_team = home_team
         self.away_team = away_team
         self.start_time = time.time()
-        self.match_id = int(self.start_time * 1000)
+        self.match_id = str(uuid.uuid4())
         self.home_score = home_score
         self.away_score = away_score
         self.status = "Not started"
@@ -41,8 +42,8 @@ class Match:
     def finish(self):
         self.status = "Finished"
 
-    def __str__(self):
-        return f"{self.home_team} {self.home_score} - {self.away_team} {self.away_score}"
+    def __repr__(self):
+        return f"{self.home_team} {self.home_score} - {self.away_team} {self.away_score}, {self.status}, {self.match_id}"
 
     def get_total_score(self) -> int:
         return self.home_score + self.away_score

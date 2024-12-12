@@ -1,2 +1,2 @@
 from .Match import Match
-from .ScoreStream import ScoreBoard
+from .ScoreBoard import ScoreBoard
