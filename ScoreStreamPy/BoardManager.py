@@ -40,7 +40,7 @@ class BoardManager:
         """
         Retrieves a summary of all ongoing matches in a formatted numbered list.
         """
-        with self.lock:  # Ensure thread safety when accessing matches
+        with self.lock: 
             summary = self.scoreboard.get_summary()
             return [
                 f"{index + 1}. {match.home_team} {match.home_score} - {match.away_score} {match.away_team}"
