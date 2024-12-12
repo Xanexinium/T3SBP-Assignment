@@ -1,4 +1,3 @@
-
 import pytest
 from ScoreStreamPy import BoardManager
 
@@ -74,4 +73,36 @@ class TestBoardManager:
 
         assert match not in manager.scoreboard.matches
 
-    def
+    import pytest
+
+@pytest.mark.parametrize("updates", [
+    [
+        {"home_team": "Argentina", "away_team": "Brasil", "home_score": 3, "away_score": 1, "match_id": "custom1-7e76-0001-bb9e-6aea8aa2d859"},
+        {"home_team": "Spain", "away_team": "Germany", "home_score": 2, "away_score": 2, "match_id": "custom2-7e76-0002-bb9e-6aea8aa2d859"},
+        {"home_team": "France", "away_team": "Italy", "home_score": 4, "away_score": 5, "match_id": "custom3-7e76-0003-bb9e-6aea8aa2d859"},
+    ]
+])
+def test_output_scoreboard_summary(scoreboard_fixture, updates):
+    """
+    Test updating scores for multiple matches and validating list output.
+    """
+    scoreboard = scoreboard_fixture
+    matches = []
+
+    for update in updates:
+        match = scoreboard.start_match(update["home_team"], update["away_team"])
+        match.match_id = update["match_id"]
+        matches.append({"match": match, "update": update})
+    for entry in matches:
+        match = entry["match"]
+        update = entry["update"]
+        scoreboard.update_match(match, update["home_score"], update["away_score"], match.match_id)
+    expected_output = [
+        f"{update['home_team']} {update['home_score']} - {update['away_score']} {update['away_team']}"
+        for update in updates
+    ]
+    result = scoreboard.display_scoreboard()
+    assert result == expected_output
+    print("Final Scoreboard Output:")
+    for line in result:
+        print(line)
