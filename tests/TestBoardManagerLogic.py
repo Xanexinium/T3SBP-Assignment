@@ -14,7 +14,6 @@ def match_fixture_correct():
 def match_fixture_invalid():
     return "!@(())", "Brasil"
 
-
 class TestBoardManager:
     
     def test_add_new_match_to_board_positive(self, match_fixture_correct):
