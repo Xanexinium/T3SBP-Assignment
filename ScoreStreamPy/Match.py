@@ -36,8 +36,8 @@ class Match:
         self._validate_if_integer(home_score)
         self._validate_if_integer(away_score)
         with self.lock:
-            self.home_score = home_score
-            self.away_score = away_score
+            self.home_score += home_score
+            self.away_score += away_score
 
     def finish(self):
         self.status = "Finished"
