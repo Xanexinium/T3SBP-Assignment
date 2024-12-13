@@ -15,7 +15,10 @@ scoreboard.
 Software characteristics:
 - Library built on Python 3.11.5
 - Pytest library is used for tests, pytest 7.4.0
+- SOLID approach. Thread safety implemented
 - Test driven development approach
+
+Assumptions:
 - Simple, contains few assumptions:
     - Validations are simplified, only basic ones (for example score should be positive integer,
             country obviously is string, one country (team) can not play with itself.
@@ -23,8 +26,9 @@ Software characteristics:
             not countries, and German football clubs can have numbers and dots.
             Error messages returned are also simple, without dynamic attributes what the source of error is, like team or score.)
     - Uses Python dictionary to store data in memory
+    - No methods to purge the scoreboard (mass close matches), mass update scores
     - No api, database connection, no web frontend
-    - Git flow simplified (no reviewers in PR etc.)
+    - Git flow intentionally simplified ! (no reviewers in PR etc., one branch per functionality)
 
 -Structure of the project:
 
@@ -33,12 +37,13 @@ ScorestreamPy_lib/
 ├── ScorestreamPyb/                  # Main package directory
 │   ├── __init__.py                  # Makes it a package
 │   ├── Match.py                     # Match class, defines Match object
-│   ├── ScoreBoard.py                # ScoreBoard class, defines logic for the Scoreboard
-│   └── ScoreManager                 # Utility functions for ScoreBoard class (optional class), provides easier methods 
+│   ├── ScoreBoard.py                # ScoreBoard class, purpose to be used to reflect the scoreboard
+│   └── ScoreManager                 # Manager class, provides methods to operate matches on the scoreboard
 │
 ├── tests/                           # Test directory
 |   ├── __init___.py                 # Makes it a package
 │   ├── TestMatchLogic_.py           # Unit tests for Match class, uses parametrise to unit test output
+│   ├── TestBoardLogic.py            # Unit tests for ScoreBoard class, uses fixtures to check logic work
 │   ├── TestBoardLogic.py            # Unit tests for ScoreBoard class, uses fixtures to check logic work
 │   └── conftest.py                  # Pytest configuration (need this for better visibility when running a test)
 │
