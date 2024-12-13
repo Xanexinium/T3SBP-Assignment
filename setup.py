@@ -1,37 +1,36 @@
 from setuptools import setup, find_packages
 
-# Read the contents of README.md for the long description
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="ScorestreamPy_lib",  # Package name (used when installing via pip)
-    version="0.1.0",  # Initial version
-    author="Your Name",  # Your name
-    author_email="your.email@example.com",  # Your email
-    description="A Python library for managing a scoreboard with match tracking, score updates, and thread safety.",  # Short description
-    long_description=long_description,  # Detailed description from README
-    long_description_content_type="text/markdown",  # Markdown formatting
-    url="https://github.com/yourusername/ScorestreamPy_lib",  # Link to your repository
-    packages=find_packages(),  # Automatically discover all packages and subpackages
+    name="ScorestreamPy_lib",  
+    version="0.1.0",  
+    author="Markiian Prysukhin",
+    author_email="edgetechnics@egmail.com",
+    description="A Python library for managing a scoreboard with match tracking, score updates, and thread safety.", 
+    long_description=long_description,  
+    long_description_content_type="text/markdown", 
+    url="https://github.com/yourusername/ScorestreamPy_lib",
+    packages=find_packages(),  
     classifiers=[
-        "Programming Language :: Python :: 3",  # Supported Python version
-        "License :: OSI Approved :: MIT License",  # License type
+        "Programming Language :: Python :: 3",  
+        "License :: OSI Approved :: MIT License",  
         "Operating System :: OS Independent",
-        "Intended Audience :: Developers",  # Who the package is for
+        "Intended Audience :: Developers",  
         "Topic :: Software Development :: Libraries",
     ],
-    python_requires=">=3.7",  # Minimum Python version required
+    python_requires=">=3.7",  
     install_requires=[
-        "pytest>=7.4.0",  # List dependencies (e.g., pytest for tests)
-        "coverage>=7.0.0",  # Add other libraries used by your code
+        "pytest>=7.4.0",  
+        "coverage>=7.0.0",  
     ],
     extras_require={
-        "dev": ["flake8", "black", "isort"],  # Extra packages for development
+        "dev": ["flake8", "black", "isort"],  
     },
     project_urls={
-        "Bug Tracker": "https://github.com/yourusername/ScorestreamPy_lib/issues",
-        "Documentation": "https://github.com/yourusername/ScorestreamPy_lib",
-        "Source Code": "https://github.com/yourusername/ScorestreamPy_lib",
+        "Bug Tracker": "https://github.com/Xanexinium/T3SBP-Assignment/issues",
+        "Documentation": "https://github.com/Xanexinium/T3SBP-Assignment",
+        "Source Code": "https://github.com/Xanexinium/T3SBP-Assignment",
     },
 )
