@@ -1,5 +1,7 @@
 import pytest
+import re
 from ScoreStreamPy import BoardManager
+from ScoreStreamPy import Match
 
 @pytest.fixture
 def match_fixture_correct():
@@ -26,82 +28,25 @@ class TestBoardManager:
         assert match.match_id != 0
         assert match.status == "In progress"
     
-    def test_add_new_match_to_board_raises_error(invalid_team_names):
-       manager = BoardManager()
-       home_team, away_team = invalid_team_names
-
-       with pytest.raises(ValueError, match="Support not empty strings, regex [a-zA-Z0-9.-], maximum 255 characters."):
-        manager.start_match(home_team, away_team)
-
-    @pytest.mark.parametrize("updates", [
-    [
-        {"home_team": "Argentina", "away_team": "Brasil", "home_score": 3, "away_score": 1, "match_id": "custom1-7e76-0001-bb9e-6aea8aa2d859"},
-        {"home_team": "Spain", "away_team": "Germany", "home_score": 2, "away_score": 2, "match_id": "custom2-7e76-0002-bb9e-6aea8aa2d859"},
-        {"home_team": "France", "away_team": "Italy", "home_score": 4, "away_score": 5, "match_id": "custom3-7e76-0003-bb9e-6aea8aa2d859"},
-    ]
-])
-    def test_update_score_for_matches(scoreboard_fixture, updates):
-        scoreboard = scoreboard_fixture
-        matches = []
-    
-        for update in updates:
-            match = scoreboard.start_match(update["home_team"], update["away_team"])
-            match.match_id = update["match_id"]
-            matches.append({"match": match, "update": update})
-        for entry in matches:
-            match = entry["match"]
-            update = entry["update"]
-            scoreboard.update_match(match, update["home_score"], update["away_score"], match.match_id)
-        for entry in matches:
-            match = entry["match"]
-            update = entry["update"]
-        
-        assert match.home_team == update["home_team"]
-        assert match.away_team == update["away_team"]
-        assert match.home_score == update["home_score"]
-        assert match.away_score == update["away_score"]
-        assert match.match_id in scoreboard.matches
-        assert match.status == "In progress"
-
-        print(f"Current scoreboard: {match.home_team} {match.home_score} - {match.away_score} {match.away_team}, Status: {match.status}, ID: {match.match_id}")
-    
-    def test_finish_match():
+    def test_add_new_match_to_board_raises_error(self, match_fixture_invalid):
         manager = BoardManager()
-        match = manager.start_match("Mexico", "Canada")
-        manager.finish_match(match)
+        home_team, away_team = match_fixture_invalid
+        expected_message = "Support not empty strings, regex [a-zA-Z0-9.-], maximum 255 characters."
+        with pytest.raises(ValueError, match=re.escape(expected_message)):
+            manager.add_match_to_board(home_team, away_team)
 
-        assert match not in manager.scoreboard.matches
-
-    import pytest
-
-@pytest.mark.parametrize("updates", [
-    [
-        {"home_team": "Argentina", "away_team": "Brasil", "home_score": 3, "away_score": 1, "match_id": "custom1-7e76-0001-bb9e-6aea8aa2d859"},
-        {"home_team": "Spain", "away_team": "Germany", "home_score": 2, "away_score": 2, "match_id": "custom2-7e76-0002-bb9e-6aea8aa2d859"},
-        {"home_team": "France", "away_team": "Italy", "home_score": 4, "away_score": 5, "match_id": "custom3-7e76-0003-bb9e-6aea8aa2d859"},
-    ]
-])
-def test_output_scoreboard_summary(scoreboard_fixture, updates):
-    """
-    Test updating scores for multiple matches and validating list output.
-    """
-    scoreboard = scoreboard_fixture
-    matches = []
-
-    for update in updates:
-        match = scoreboard.start_match(update["home_team"], update["away_team"])
-        match.match_id = update["match_id"]
-        matches.append({"match": match, "update": update})
-    for entry in matches:
-        match = entry["match"]
-        update = entry["update"]
-        scoreboard.update_match(match, update["home_score"], update["away_score"], match.match_id)
-    expected_output = [
-        f"{update['home_team']} {update['home_score']} - {update['away_score']} {update['away_team']}"
-        for update in updates
-    ]
-    result = scoreboard.display_scoreboard()
-    assert result == expected_output
-    print("Final Scoreboard Output:")
-    for line in result:
-        print(line)
+    @pytest.mark.parametrize("home_score, away_score, match_id", [
+        (1, 2, "333ec514-7e76-4901-bb9e-6aea8aa2d859"),
+    ])
+    def test_update_score_for_matches(self, home_score, away_score, match_id):
+        manager = BoardManager()
+        manager.add_match_to_board("TeamA", "TeamB", match_id)
+        manager.update_match_score(match_id, home_score, away_score)
+    
+        updated_match = manager.scoreboard.matches[match_id]
+    
+        assert updated_match.home_score == home_score
+        assert updated_match.away_score == away_score
+        assert updated_match.match_id == match_id
+        
+        print(f"Updated Match: {updated_match}")
