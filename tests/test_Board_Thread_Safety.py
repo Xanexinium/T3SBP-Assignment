@@ -15,7 +15,6 @@ class TestThreadScoreBoard:
         """
         scoreboard = scoreboard_fixture
         threads = []
-
         def start_match_in_thread(home_team, away_team):
             match = scoreboard.start_match(home_team, away_team)
 
@@ -30,7 +29,6 @@ class TestThreadScoreBoard:
         for thread in threads:
             thread.join()
 
-        # Verify all matches are added
         assert len(scoreboard.matches) == 10
 
     def test_update_match_thread_safety(self, scoreboard_fixture):
@@ -46,7 +44,6 @@ class TestThreadScoreBoard:
             for _ in range(100):
                 scoreboard.update_match(match, 1, 1, match_id)
 
-        # Start threads to update the match score
         for _ in range(10): 
             thread = threading.Thread(target=update_match_in_thread, args=(match.match_id,))
             threads.append(thread)
@@ -55,7 +52,6 @@ class TestThreadScoreBoard:
         for thread in threads:
             thread.join()
 
-        # Verify the final score
         assert match.home_score == 1000
         assert match.away_score == 1000
 
@@ -92,7 +88,6 @@ class TestThreadScoreBoard:
         """
         scoreboard = scoreboard_fixture
 
-        # Start some matches
         match1 = scoreboard.start_match("TeamA", "TeamB")
         match2 = scoreboard.start_match("TeamC", "TeamD")
 
@@ -100,19 +95,14 @@ class TestThreadScoreBoard:
             for _ in range(100):
                 scoreboard.update_match(match1, 1, 0, match1.match_id)
                 scoreboard.update_match(match2, 0, 1, match2.match_id)
-
         threads = []
-
-        # Start multiple threads for updates
         for _ in range(5):
             thread = threading.Thread(target=update_match_scores)
             threads.append(thread)
             thread.start()
-
         for thread in threads:
             thread.join()
-
-        # Verify the summary is accurate
         summary = scoreboard.get_summary()
+
         assert len(summary) == 2
         assert summary[0].get_total_score() >= summary[1].get_total_score()
