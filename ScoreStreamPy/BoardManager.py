@@ -1,6 +1,7 @@
 import threading
 from ScoreStreamPy import Match, ScoreBoard
 
+
 class BoardManager:
     def __init__(self):
         self.scoreboard = ScoreBoard()
@@ -12,16 +13,16 @@ class BoardManager:
         """
         with self.lock:
             match = self.scoreboard.start_match(home_team, away_team)
-            if match_id:  
+            if match_id:
                 match.match_id = match_id
-            self.scoreboard.matches[match.match_id] = match  
+            self.scoreboard.matches[match.match_id] = match
             return match
 
     def update_match_score(self, match_id: str, home_score: int, away_score: int):
         """
         Updates the score for an existing match in the scoreboard.
         """
-        with self.lock: 
+        with self.lock:
             if match_id not in self.scoreboard.matches:
                 raise ValueError("Match not found in the scoreboard.")
             match = self.scoreboard.matches[match_id]
@@ -31,7 +32,7 @@ class BoardManager:
         """
         Finishes a match and removes it from the scoreboard.
         """
-        with self.lock:  
+        with self.lock:
             if match_id not in self.scoreboard.matches:
                 raise ValueError("Match not found in the scoreboard.")
             match = self.scoreboard.matches[match_id]
@@ -41,7 +42,7 @@ class BoardManager:
         """
         Retrieves a summary of all ongoing matches in a formatted numbered list.
         """
-        with self.lock: 
+        with self.lock:
             summary = self.scoreboard.get_summary()
             return [
                 f"{index + 1}. {match.home_team} {match.home_score} - {match.away_score} {match.away_team}"
@@ -55,4 +56,3 @@ class BoardManager:
         summary = self.get_scoreboard_summary()
         for line in summary:
             print(line)
-

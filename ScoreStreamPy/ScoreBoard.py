@@ -1,6 +1,7 @@
 import threading
 from ScoreStreamPy import Match
 
+
 class ScoreBoard:
     def __init__(self):
         self.matches = {}
@@ -36,18 +37,21 @@ class ScoreBoard:
                 match.finish()
             else:
                 raise ValueError("Match not found in the scoreboard.")
+
     def get_summary(self) -> list:
         """
         Returns all matches in progress, sorted by total score and ordered by the most recently started match in the
 scoreboard.
         """
         with self.lock:
-            ongoing_matches = [match for match in self.matches.values() if match.status == "In progress"]
+            ongoing_matches = [
+                match for match in self.matches.values() if match.status == "In progress"]
             return sorted(
                 ongoing_matches,
                 key=lambda match: (match.get_total_score(), match.start_time),
                 reverse=True
             )
+
     def __repr__(self):
         """String representation of the scoreboard."""
         return "\n".join(str(match) for match in self.matches.values())

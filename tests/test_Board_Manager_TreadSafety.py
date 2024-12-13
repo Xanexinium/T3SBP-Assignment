@@ -2,6 +2,7 @@ import pytest
 import threading
 from ScoreStreamPy import BoardManager
 
+
 @pytest.fixture
 def board_manager_fixture():
     """
@@ -129,4 +130,5 @@ class TestBoardManagerThreadSafety:
         finish_thread.join()
 
         # Verify all matches are removed
-        assert len(manager.scoreboard.matches) == 0, "All matches should be finished and removed"
+        assert len(
+            manager.scoreboard.matches) == 0, "All matches should be finished and removed"

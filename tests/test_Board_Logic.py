@@ -3,13 +3,17 @@ from ScoreStreamPy import Match
 from ScoreStreamPy import ScoreBoard
 
 # Fixtures needed in test
+
+
 @pytest.fixture
 def match_fixture():
     return Match("Argentina", "Brasil")
 
+
 @pytest.fixture
 def scoreboard_fixture():
     return ScoreBoard()
+
 
 class TestScoreBoardMethods:
 
@@ -38,7 +42,7 @@ class TestScoreBoardMethods:
     def test_update_match_not_found(self, scoreboard_fixture, match_fixture):
         scoreboard = scoreboard_fixture
         with pytest.raises(ValueError, match="Match not found in the scoreboard."):
-            scoreboard.update_match(match_fixture, 1, 1, 123456) 
+            scoreboard.update_match(match_fixture, 1, 1, 123456)
 
     def test_finish_match(self, scoreboard_fixture):
         scoreboard = scoreboard_fixture
@@ -53,7 +57,7 @@ class TestScoreBoardMethods:
     def test_finish_match_not_found(self, scoreboard_fixture, match_fixture):
         scoreboard = scoreboard_fixture
         with pytest.raises(ValueError, match="Match not found in the scoreboard."):
-            scoreboard.finish_match(match_fixture, 123456) 
+            scoreboard.finish_match(match_fixture, 123456)
 
 
 class TestScoreBoardLogic:
@@ -81,8 +85,8 @@ class TestScoreBoardLogic:
         print(summary)
 
         assert len(summary) == 5
-        assert summary[0] == match4  
-        assert summary[1] == match2  
+        assert summary[0] == match4
+        assert summary[1] == match2
         assert summary[2] == match1
         assert summary[3] == match5
         assert summary[4] == match3

@@ -3,12 +3,13 @@ import time
 import re
 import uuid
 
+
 class Match:
     def __init__(self, home_team: str, away_team: str,
-                    home_score:int = 0, away_score: int = 0, match_id:str = None):
+                 home_score: int = 0, away_score: int = 0, match_id: str = None):
         self._validate_team_name(home_team)
         self._validate_team_name(away_team)
-        self._validate_same_team(home_team,away_team)
+        self._validate_same_team(home_team, away_team)
         self.home_team = home_team
         self.away_team = away_team
         self.start_time = time.time()
@@ -20,8 +21,9 @@ class Match:
 
     def _validate_team_name(self, team: str):
         if not isinstance(team, str) or not re.match(r'^[a-zA-Z0-9.-]{1,255}$', team):
-            raise ValueError("Support not empty strings, regex [a-zA-Z0-9.-], maximum 255 characters.")
-        
+            raise ValueError(
+                "Support not empty strings, regex [a-zA-Z0-9.-], maximum 255 characters.")
+
     def _validate_same_team(self, home_team, away_team):
         if home_team == away_team:
             raise ValueError("Home team and away team cannot be the same.")
