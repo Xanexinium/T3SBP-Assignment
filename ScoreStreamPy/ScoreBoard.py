@@ -22,7 +22,7 @@ class ScoreBoard:
         """
         with self.lock:
             if match_id in self.matches:
-                match.update_score(home_score, away_score)
+                self.matches[match_id].update_score(home_score, away_score)
             else:
                 raise ValueError("Match not found in the scoreboard.")
 

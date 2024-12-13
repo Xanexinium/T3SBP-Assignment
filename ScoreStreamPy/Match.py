@@ -5,14 +5,14 @@ import uuid
 
 class Match:
     def __init__(self, home_team: str, away_team: str,
-                    home_score:int = 0, away_score: int = 0):
+                    home_score:int = 0, away_score: int = 0, match_id:str = None):
         self._validate_team_name(home_team)
         self._validate_team_name(away_team)
         self._validate_same_team(home_team,away_team)
         self.home_team = home_team
         self.away_team = away_team
         self.start_time = time.time()
-        self.match_id = str(uuid.uuid4())
+        self.match_id = match_id if match_id else str(uuid.uuid4())
         self.home_score = home_score
         self.away_score = away_score
         self.status = "Not started"
@@ -36,8 +36,8 @@ class Match:
         self._validate_if_integer(home_score)
         self._validate_if_integer(away_score)
         with self.lock:
-            self.home_score = home_score
-            self.away_score = away_score
+            self.home_score += home_score
+            self.away_score += away_score
 
     def finish(self):
         self.status = "Finished"
