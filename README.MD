@@ -29,6 +29,7 @@ Assumptions:
     - No methods to purge the scoreboard (mass close matches), mass update scores
     - No api, database connection, no web frontend
     - Git flow intentionally simplified ! (no reviewers in PR etc., one branch per functionality)
+
 Brief usage guide: 
 
 ```
@@ -46,15 +47,6 @@ Brief usage guide:
 # Use BoardManager.get_scoreboard_summary() to get formatted numbered list of matches.
 
 ```
-
-
-Use finish_match (by match_id) to close the match and remove it from the scoreboard.
-
-After finished, the match will no longer appear in the scoreboard.
-
-Use get_scoreboard_summary to retrieve summary of matches. Matches are ordered by their total score and start time.
-
-Use display_scoreboard retrieve formatted summary of matches. Matches are ordered by their total score and start time.
 
 -Structure of the project:
 ```
