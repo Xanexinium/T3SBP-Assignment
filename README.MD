@@ -31,15 +31,22 @@ Assumptions:
     - Git flow intentionally simplified ! (no reviewers in PR etc., one branch per functionality)
 Brief usage guide: 
 
-First, import the BoardManager class from your package.
+```
+# First, import the BoardManager class from your package and can create a BoardManager instance.
 
-The BoardManager will automatically manage a ScoreBoard internally.
+# The BoardManager will automatically manage a ScoreBoard internally. 
 
-Use add_match_to_board to create a new match with the home and away teams. A unique match_id can also be optionally provided.
+# Use BoardManager.add_match_to_board(match.home_team, match.away_team, ID: match.match_id)
+ to create a new match with the home and away teams. A unique match_id can also be optionally provided.
 
-A unique match_id is automatically generated if not provided.
+# Use BoardManager.update_match_score(match.match_id, home_score=3, away_score=2) to update the scores of an existing match using its match_id.
 
-Use update_match_score to update the scores of an existing match using its match_id.
+# Use finish_match(match.match_id) to finish match.
+
+# Use BoardManager.get_scoreboard_summary() to get formatted numbered list of matches.
+
+```
+
 
 Use finish_match (by match_id) to close the match and remove it from the scoreboard.
 
