@@ -42,9 +42,11 @@ ScorestreamPy_lib/
 │
 ├── tests/                           # Test directory
 |   ├── __init___.py                 # Makes it a package
-│   ├── TestMatchLogic_.py           # Unit tests for Match class, uses parametrise to unit test output
-│   ├── TestBoardLogic.py            # Unit tests for ScoreBoard class, uses fixtures to check logic work
-│   ├── TestBoardLogic.py            # Unit tests for ScoreBoard class, uses fixtures to check logic work
+│   ├── test_Match_Logic.py          # Unit tests for Match class, uses parametrise to unit test output
+│   ├── test_Board_Logic.py          # Unit tests for ScoreBoard class, uses fixtures to check logic work
+│   ├── test_Board_Manager_Logic.py  # Unit tests for BoardManager class, uses fixtures to check logic work
+│   ├── test_Board_Manager_TreadSafety.py  # Unit tests for BoardManager class, uses fixtures to check logic work
+│   ├── test_Board_Thread_Safety.py  # Unit tests for ScoreBoard class, uses fixtures to check logic work
 │   └── conftest.py                  # Pytest configuration (need this for better visibility when running a test)
 │
 ├── setup.py                         # Setup script for packaging
@@ -53,4 +55,20 @@ ScorestreamPy_lib/
 ├── LICENSE                          # MIT license file
 └── requirements.txt                 # Dependency list
 
+Test coverage report
 
+Name                                                           Stmts   Miss  Cover
+----------------------------------------------------------------------------------
+/Users/markiianprysukhin/T3SBP/ScoreStreamPy/BoardManager.py      33      8    76%
+/Users/markiianprysukhin/T3SBP/ScoreStreamPy/Match.py             40      0   100%
+/Users/markiianprysukhin/T3SBP/ScoreStreamPy/ScoreBoard.py        29      0   100%
+/Users/markiianprysukhin/T3SBP/ScoreStreamPy/__init__.py           3      0   100%
+__init__.py                                                        0      0   100%
+conftest.py                                                        8      1    88%
+test_Board_Logic.py                                               75      0   100%
+test_Board_Manager_Logic.py                                       29      2    93%
+test_Board_Manager_TreadSafety.py                                 81      4    95%
+test_Board_Thread_Safety.py                                       69      2    97%
+test_Match_Logic.py                                               41      0   100%
+----------------------------------------------------------------------------------
+TOTAL                                                            408     17    96%
