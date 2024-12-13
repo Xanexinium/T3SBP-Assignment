@@ -1,0 +1,7 @@
+pytest>=7.4.0
+coverage>=7.0.0
+
+[dev]
+flake8
+black
+isort

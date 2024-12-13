@@ -1,0 +1,18 @@
+[project]
+name = "ScoreStreamPy"
+version = "0.0.1"
+authors = [
+  { name="Markiian Prysukhin", email="edgetechnics@egmail.com" },
+]
+description = "A Python library for managing a scoreboard with match tracking, score updates, and thread safety."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/Xanexinium/T3SBP-Assignment"
+Issues = "https://github.com/Xanexinium/T3SBP-Assignment/issues"

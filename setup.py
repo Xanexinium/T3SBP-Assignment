@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="ScorestreamPy_lib",  
-    version="0.1.0",  
+    version="0.0.1",  
     author="Markiian Prysukhin",
     author_email="edgetechnics@egmail.com",
     description="A Python library for managing a scoreboard with match tracking, score updates, and thread safety.", 
@@ -26,7 +26,7 @@ setup(
         "coverage>=7.0.0",  
     ],
     extras_require={
-        "dev": ["flake8", "black", "isort"],  
+        "dev": ["flake8"],  
     },
     project_urls={
         "Bug Tracker": "https://github.com/Xanexinium/T3SBP-Assignment/issues",
