@@ -31,29 +31,30 @@ Assumptions:
     - Git flow intentionally simplified ! (no reviewers in PR etc., one branch per functionality)
 
 -Structure of the project:
-
+```
 ScorestreamPy_lib/
 │
 ├── ScorestreamPyb/                  # Main package directory
 │   ├── __init__.py                  # Makes it a package
 │   ├── Match.py                     # Match class, defines Match object
-│   ├── ScoreBoard.py                # ScoreBoard class, purpose to be used to reflect the scoreboard
-│   └── ScoreManager                 # Manager class, provides methods to operate matches on the scoreboard
+│   ├── ScoreBoard.py                # ScoreBoard class, purpose to reflect the scoreboard
+│   └── ScoreManager.py              # Manager class, methods to operate matches on the scoreboard
 │
 ├── tests/                           # Test directory
-|   ├── __init___.py                 # Makes it a package
-│   ├── test_Match_Logic.py          # Unit tests for Match class, uses parametrise to unit test output
-│   ├── test_Board_Logic.py          # Unit tests for ScoreBoard class, uses fixtures to check logic work
-│   ├── test_Board_Manager_Logic.py  # Unit tests for BoardManager class, uses fixtures to check logic work
-│   ├── test_Board_Manager_TreadSafety.py  # Unit tests for BoardManager class, uses fixtures to check logic work
-│   ├── test_Board_Thread_Safety.py  # Unit tests for ScoreBoard class, uses fixtures to check logic work
-│   └── conftest.py                  # Pytest configuration (need this for better visibility when running a test)
+│   ├── __init__.py                  # Makes it a package
+│   ├── test_Match_Logic.py          # Unit tests for Match class
+│   ├── test_Board_Logic.py          # Unit tests for ScoreBoard class
+│   ├── test_Board_Manager_Logic.py  # Unit tests for BoardManager class
+│   ├── test_Board_Manager_TreadSafety.py  # Thread safety tests for BoardManager
+│   ├── test_Board_Thread_Safety.py  # Thread safety tests for ScoreBoard
+│   └── conftest.py                  # Pytest configuration
 │
 ├── setup.py                         # Setup script for packaging
 ├── pyproject.toml                   # Build configuration
 ├── README.md                        # Project description
-├── LICENSE                          # MIT license file
+├── LICENSE                          # MIT License
 └── requirements.txt                 # Dependency list
+```
 
 Test coverage report
 
