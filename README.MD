@@ -29,6 +29,25 @@ Assumptions:
     - No methods to purge the scoreboard (mass close matches), mass update scores
     - No api, database connection, no web frontend
     - Git flow intentionally simplified ! (no reviewers in PR etc., one branch per functionality)
+Brief usage guide: 
+
+First, import the BoardManager class from your package.
+
+The BoardManager will automatically manage a ScoreBoard internally.
+
+Use add_match_to_board to create a new match with the home and away teams. A unique match_id can also be optionally provided.
+
+A unique match_id is automatically generated if not provided.
+
+Use update_match_score to update the scores of an existing match using its match_id.
+
+Use finish_match (by match_id) to close the match and remove it from the scoreboard.
+
+After finished, the match will no longer appear in the scoreboard.
+
+Use get_scoreboard_summary to retrieve summary of matches. Matches are ordered by their total score and start time.
+
+Use display_scoreboard retrieve formatted summary of matches. Matches are ordered by their total score and start time.
 
 -Structure of the project:
 ```
