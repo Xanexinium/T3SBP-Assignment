@@ -57,7 +57,7 @@ ScorestreamPy_lib/
 ```
 
 Test coverage report
-
+```
 Name                                                           Stmts   Miss  Cover
 ----------------------------------------------------------------------------------
 /Users/markiianprysukhin/T3SBP/ScoreStreamPy/BoardManager.py      33      8    76%
@@ -73,3 +73,4 @@ test_Board_Thread_Safety.py                                       69      2    9
 test_Match_Logic.py                                               41      0   100%
 ----------------------------------------------------------------------------------
 TOTAL                                                            408     17    96%
+```
