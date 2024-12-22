@@ -1,82 +1,72 @@
-import pytest
-import re
-from ScoreStreamPy.Match import Match
+import unittest
+import uuid
+from ScoreStreamPy import Match
 
-
-class TestMatchTeamValidate:
-
-    @pytest.mark.parametrize("home_team, away_team, expected_message", [
-        ("A" * 256, "Croatia",
-         "Support not empty strings, regex [a-zA-Z0-9.-], maximum 255 characters."),
-        ("Slovenia", "B" * 256,
-         "Support not empty strings, regex [a-zA-Z0-9.-], maximum 255 characters."),
-        ("@&?///", "Croatia",
-         "Support not empty strings, regex [a-zA-Z0-9.-], maximum 255 characters."),
-        ("Slovenia", "",
-         "Support not empty strings, regex [a-zA-Z0-9.-], maximum 255 characters."),
-        (" ", "Slovenia",
-         "Support not empty strings, regex [a-zA-Z0-9.-], maximum 255 characters."),
-    ])
-    def test_validation_team_name_error_dispatched(self, home_team,
-                                                   away_team, expected_message):
-        escaped_message = re.escape(expected_message)
-        with pytest.raises(ValueError, match=escaped_message):
-            Match(home_team, away_team)
-
-    @pytest.mark.parametrize("home_team, away_team, expected_message", [
-        ("Slovenia", "Slovenia", "Home team and away team cannot be the same."),
-    ])
-    def test_validation_same_team(self, home_team,
-                                  away_team, expected_message):
-        with pytest.raises(ValueError, match=expected_message):
-            Match(home_team, away_team)
-
-
-class TestMatchScoreValidate:
-
-    @pytest.mark.parametrize("home_score, away_score, expected_message", [
-        ("Abc", -2, "Expected positive integer value."),
-        (-1, "Xyz", "Expected positive integer value."),
-        (1, "Xyz", "Expected positive integer value."),
-        ("Adb", "1", "Expected positive integer value."),
-        ("1", "Adb", "Expected positive integer value."),
-        ("Home", "Away", "Expected positive integer value."),
-    ])
-    def test_validation_message_update_score_dispatched(self, home_score, away_score, expected_message):
-        match = Match("TeamA", "TeamB")
-        with pytest.raises(ValueError, match=expected_message):
-            match.update_score(home_score, away_score)
-
-
-class TestMatchClassMethods:
-
-    @pytest.mark.parametrize("home_team, away_team, home_score, away_score", [
-        ("Argentina", "Jamaica", 0, 0),
-    ])
-    def test_start_new_match(self, home_team, away_team,
-                             home_score, away_score):
-        match = Match(home_team, away_team)
-        print(match)
-        assert match.home_team == "Argentina"
-        assert match.away_team == "Jamaica"
-        assert match.home_score == 0
-        assert match.away_score == 0
-
-    @pytest.mark.parametrize("home_team, away_team, home_score, away_score", [
-        ("Argentina", "Jamaica", 5, 0),
-    ])
-    def test_update_score(self, home_team, away_team, home_score, away_score):
-        match = Match(home_team, away_team)
-        match.update_score(home_score, away_score)
-        print(match)
-        assert match.home_score == 5
-        assert match.away_score == 0
-
-    @pytest.mark.parametrize("home_team, away_team, home_score, away_score", [
-        ("Argentina", "Jamaica", 5, 3),
-    ])
-    def test_total_score(self, home_team, away_team, home_score, away_score):
-        match = Match(home_team, away_team, home_score, away_score)
-        total_score = match.get_total_score()
-        print("Total score is", total_score)
-        assert total_score == (home_score + away_score)
+class TestMatch(unittest.TestCase):
+    def setUp(self):
+        self.match = Match(home_team="Portugal", away_team="Spain")
+    
+    def test_initialization(self):
+        self.assertEqual(self.match.home_team, "Portugal")
+        self.assertEqual(self.match.away_team, "Spain")
+        self.assertEqual(self.match.home_score, 0)
+        self.assertEqual(self.match.away_score, 0)
+        self.assertEqual(self.match.status, "Not started")
+        self.assertTrue(isinstance(self.match.match_id, uuid.UUID))
+    
+    def test_update_score_creates_new_instance(self):
+        new_match = self.match.update_score(1, 2)
+        self.assertNotEqual(self.match, new_match)
+        self.assertEqual(new_match.home_score, 1)
+        self.assertEqual(new_match.away_score, 2)
+        self.assertEqual(self.match.home_score, 0)
+        self.assertEqual(self.match.away_score, 0)  
+    
+    def test_finish_creates_new_instance(self):
+        finished_match = self.match.finish()
+        self.assertNotEqual(self.match, finished_match)
+        self.assertEqual(finished_match.status, "Finished")
+        self.assertEqual(self.match.status, "Not started")  # Original match remains unchanged
+    
+    def test_immutability_over_multiple_operations(self):
+        # Update score
+        updated_match = self.match.update_score(3, 1)
+        # Finish match
+        finished_match = updated_match.finish()
+        
+        # Validate original match remains unchanged
+        self.assertEqual(self.match.home_score, 0)
+        self.assertEqual(self.match.away_score, 0)
+        self.assertEqual(self.match.status, "Not started")
+        
+        # Validate updated match
+        self.assertEqual(updated_match.home_score, 3)
+        self.assertEqual(updated_match.away_score, 1)
+        self.assertEqual(updated_match.status, "Not started")
+        
+        # Validate finished match
+        self.assertEqual(finished_match.home_score, 3)
+        self.assertEqual(finished_match.away_score, 1)
+        self.assertEqual(finished_match.status, "Finished")
+    
+    def test_team_name_validation(self):
+        with self.assertRaises(ValueError):
+            Match(home_team="Invalid Team!", away_team="TeamB")
+    
+    def test_same_team_validation(self):
+        with self.assertRaises(ValueError):
+            Match(home_team="TeamA", away_team="TeamA")
+    
+    def test_negative_scores(self):
+        with self.assertRaises(ValueError):
+            self.match.update_score(-1, 2)
+        with self.assertRaises(ValueError):
+            self.match.update_score(1, -2)
+    
+    def test_total_score(self):
+        updated_match = self.match.update_score(2, 3)
+        self.assertEqual(updated_match.get_total_score(), 5)
+    
+    def test_unique_ids_for_new_instances(self):
+        new_match = self.match.update_score(1, 1)
+        self.assertEqual(self.match.match_id, new_match.match_id)

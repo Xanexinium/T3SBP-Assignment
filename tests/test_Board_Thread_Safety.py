@@ -10,7 +10,6 @@ def scoreboard_fixture():
 
 
 class TestThreadScoreBoard:
-
     def test_start_match_thread_safety(self, scoreboard_fixture):
         """
         Test starting multiple matches concurrently to check thread safety.
@@ -19,7 +18,7 @@ class TestThreadScoreBoard:
         threads = []
 
         def start_match_in_thread(home_team, away_team):
-            match = scoreboard.start_match(home_team, away_team)
+            scoreboard.start_match(home_team, away_team)
 
         for i in range(10):
             thread = threading.Thread(
@@ -45,19 +44,22 @@ class TestThreadScoreBoard:
 
         def update_match_in_thread(match_id):
             for _ in range(100):
-                scoreboard.update_match(match, 1, 1, match_id)
+                scoreboard.update_match(match_id, 1, 1)
 
         for _ in range(10):
             thread = threading.Thread(
-                target=update_match_in_thread, args=(match.match_id,))
+                target=update_match_in_thread, args=(match.match_id,)
+            )
             threads.append(thread)
             thread.start()
 
         for thread in threads:
             thread.join()
 
-        assert match.home_score == 1000
-        assert match.away_score == 1000
+        # Retrieve the updated match
+        updated_match = scoreboard.matches[match.match_id]
+        assert updated_match.home_score == 1000
+        assert updated_match.away_score == 1000
 
     def test_finish_match_thread_safety(self, scoreboard_fixture):
         """
@@ -66,20 +68,18 @@ class TestThreadScoreBoard:
         scoreboard = scoreboard_fixture
 
         # Start multiple matches
-        matches = [scoreboard.start_match(
-            f"Team{i}", f"Team{i+10}") for i in range(5)]
+        matches = [scoreboard.start_match(f"Team{i}", f"Team{i+10}") for i in range(5)]
         threads = []
 
         def finish_match_in_thread(match_id):
             try:
-                scoreboard.finish_match(
-                    matches[match_id], matches[match_id].match_id)
+                scoreboard.finish_match(match_id)
             except ValueError as e:
                 print(e)
 
         # Start threads to finish matches
-        for i in range(5):
-            thread = threading.Thread(target=finish_match_in_thread, args=(i,))
+        for match in matches:
+            thread = threading.Thread(target=finish_match_in_thread, args=(match.match_id,))
             threads.append(thread)
             thread.start()
 
@@ -99,8 +99,9 @@ class TestThreadScoreBoard:
 
         def update_match_scores():
             for _ in range(100):
-                scoreboard.update_match(match1, 1, 0, match1.match_id)
-                scoreboard.update_match(match2, 0, 1, match2.match_id)
+                scoreboard.update_match(match1.match_id, 1, 0)
+                scoreboard.update_match(match2.match_id, 0, 1)
+
         threads = []
         for _ in range(5):
             thread = threading.Thread(target=update_match_scores)
@@ -108,6 +109,7 @@ class TestThreadScoreBoard:
             thread.start()
         for thread in threads:
             thread.join()
+
         summary = scoreboard.get_summary()
 
         assert len(summary) == 2
