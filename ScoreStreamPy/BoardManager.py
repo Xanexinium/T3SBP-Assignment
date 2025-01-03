@@ -9,10 +9,9 @@ class BoardManager:
 
     def add_match_to_board(self, home_team: str, away_team: str, match_id: str = None) -> Match:
         with self.lock:
-            match = self.scoreboard.start_match(home_team, away_team)
-        if match_id:
-            match.match_id = match_id 
-        return match
+            match = Match(home_team=home_team, away_team=away_team, match_id=match_id)
+            self.scoreboard.matches[match.match_id] = match
+            return match
 
     def update_match_score(self, match_id: str, home_score: int, away_score: int):
         """
