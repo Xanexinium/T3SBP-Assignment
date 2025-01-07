@@ -55,3 +55,14 @@ scoreboard.
     def __repr__(self):
         """String representation of the scoreboard."""
         return "\n".join(str(match) for match in self.matches.values())
+    
+    def get_goals_by_team(self, team_name: str) -> int:
+        """
+        Returns the total goals scored by the given team across all matches.
+        """
+        with self.lock:
+            return sum(
+            match.home_score if match.home_team == team_name else match.away_score
+            for match in self.matches.values()
+            if team_name in {match.home_team, match.away_team}
+        )
